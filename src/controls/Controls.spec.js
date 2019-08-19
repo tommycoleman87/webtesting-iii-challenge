@@ -27,11 +27,45 @@ describe('<Controls />', () => {
         const openBtn = dashboard.getByTestId('openBtn');
         const lockBtn = dashboard.getByTestId('lockBtn');
         expect(openBtn.textContent).toBe('Close Gate');
-        expect(lockBtn.textContent).toBe('Unlock Gate')
+        expect(lockBtn.textContent).toBe('Lock Gate');
         fireEvent.click(openBtn);
         expect(openBtn.textContent).toBe('Open Gate');
+        expect(lockBtn.textContent).toBe('Lock Gate');
+        fireEvent.click(lockBtn)
+        expect(lockBtn.textContent).toBe('Unlock Gate');
+    })
 
+    it('should disable open button when gate is locked', () => {
+        const dashboard = render(<Dashboard />)
+        const openBtn = dashboard.getByTestId('openBtn');
+        const lockBtn = dashboard.getByTestId('lockBtn');
+        expect(openBtn.textContent).toBe('Close Gate');
+        fireEvent.click(openBtn);
+        expect(openBtn.textContent).toBe('Open Gate');
+        fireEvent.click(openBtn);
+        expect(openBtn.textContent).toBe('Close Gate');
+        fireEvent.click(openBtn);
+        expect(openBtn.textContent).toBe('Open Gate');
+        fireEvent.click(lockBtn);
+        fireEvent.click(openBtn);
+        expect(openBtn.textContent).toBe('Open Gate');
+    })
 
-
+    it('should disable lock button when gate is open', () => {
+        const dashboard = render(<Dashboard />)
+        const openBtn = dashboard.getByTestId('openBtn');
+        const lockBtn = dashboard.getByTestId('lockBtn');
+        expect(openBtn.textContent).toBe('Close Gate');
+        fireEvent.click(openBtn);
+        expect(openBtn.textContent).toBe('Open Gate');
+        expect(lockBtn.textContent).toBe('Lock Gate');
+        fireEvent.click(lockBtn);
+        expect(lockBtn.textContent).toBe('Unlock Gate');
+        fireEvent.click(lockBtn);
+        expect(lockBtn.textContent).toBe('Lock Gate');
+        fireEvent.click(openBtn);
+        expect(openBtn.textContent).toBe('Close Gate');
+        fireEvent.click(lockBtn);
+        expect(lockBtn.textContent).toBe('Lock Gate');
     })
 })
